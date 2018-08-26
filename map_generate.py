@@ -2,8 +2,10 @@ import img_handling
 import pygame
 import random as r
 import tile
-from win32api import GetSystemMetrics
-(width, height) = (GetSystemMetrics(0),GetSystemMetrics(1))
+# from win32api import GetSystemMetrics
+# (width, height) = (GetSystemMetrics(0),GetSystemMetrics(1))
+infoObject = pygame.display.Info()
+(width, height) = (infoObject.current_w, infoObject.current_h)
 BOARD_LEFT_POS = (width-height)//2
 BUFFER_SPACE = 0
 
@@ -23,8 +25,8 @@ def gen_map(board):
             if j%2==0:
                 pos = (BOARD_LEFT_POS+shift_left+cons_shift, shift_down+constant_shift)
             else:
-                pos = (BOARD_LEFT_POS+shift_left+cons_shift, shift_down) 
-                       
+                pos = (BOARD_LEFT_POS+shift_left+cons_shift, shift_down)
+
             if ((j == 0 or j == 6) and i>=1 and i<=4) or ((j==1 or j==5) and (i==1 or i==5)) or ((j==2 or j==4) and (i==0 or i==5)) or (j==3 and (i==0 or i==6)):
                 tileBoard.append(tile.Tile("Water", -1, img_handling.WATER_img, pos, 0))
             elif ((j==1 or j==5) and i>1 and i<5) or ((j==2 or j==4) and i>0 and i<5) or (j==3 and i>0 and i<6):
@@ -48,17 +50,17 @@ def gen_map(board):
                     elif newSel == 1:
                         num = r.randrange(len(numbers))
                         tileBoard.append(tile.Tile("Clay", numbers[num], img_handling.CLAY_img, pos, coords[nth], board))
-                        numbers.pop(num)                            
+                        numbers.pop(num)
                         nth+=1
                     elif newSel == 2:
                         num = r.randrange(len(numbers))
                         tileBoard.append(tile.Tile("Wood", numbers[num], img_handling.WOOD_img, pos, coords[nth], board))
-                        numbers.pop(num)                            
+                        numbers.pop(num)
                         nth+=1
                     elif newSel == 3:
                         num = r.randrange(len(numbers))
                         tileBoard.append(tile.Tile("Wheat", numbers[num], img_handling.WHEAT_img, pos, coords[nth], board))
-                        numbers.pop(num)                            
+                        numbers.pop(num)
                         nth+=1
                     elif newSel == 4:
                         num = r.randrange(len(numbers))

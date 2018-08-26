@@ -3,8 +3,11 @@
 import random as r
 import img_handling
 import pygame
-from win32api import GetSystemMetrics
-(width, height) = (GetSystemMetrics(0),GetSystemMetrics(1))
+# from win32api import GetSystemMetrics
+# (width, height) = (GetSystemMetrics(0),GetSystemMetrics(1))
+infoObject = pygame.display.Info()
+(width, height) = (infoObject.current_w, infoObject.current_h)
+
 BOARD_LEFT_POS = (width-height)//2
 class Deck():
     def __init__(self):
@@ -30,20 +33,20 @@ class Deck():
             self.dev_deck.append(og_deck.pop(num))
         self.cardSize = pygame.Surface.get_size(img_handling.cWood)
         self.baseShift = 50
-    
+
     def draw_res(self, res, player):
         if self.res_deck[res] > 0:
             self.res_deck[res] -= 1
             player.add_res(res)
         else:
             print("Sorry! There are no more available "+res.lower()+"!")
-    
+
     def draw_dev(self, player):
         if len(self.dev_deck)>0:
             player.special_cards.append(self.dev_deck.pop())
         else:
             print("Sorry! There are no more available development cards!")
-    
+
     def draw_decks(self, screen):
         if self.res_deck["WOOD"] > 0:
             screen.blit(img_handling.cWood,(BOARD_LEFT_POS-self.cardSize[0]//2, self.baseShift))

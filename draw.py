@@ -1,7 +1,9 @@
 import pygame
 import img_handling
-from win32api import GetSystemMetrics
-(width, height) = (GetSystemMetrics(0),GetSystemMetrics(1))
+# from win32api import GetSystemMetrics
+# (width, height) = (GetSystemMetrics(0),GetSystemMetrics(1))
+infoObject = pygame.display.Info()
+(width, height) = (infoObject.current_w, infoObject.current_h)
 BOARD_LEFT_POS = (width-height)//2
 main_left = int(width/2-((width/2-BOARD_LEFT_POS)/2))
 menu_left = main_left + height//8
@@ -33,14 +35,14 @@ def draw_win(colour):
         print("RED HAS WON THE GAME")
     else:
         print("ORANGE HAS WON THE GAME")
-        
+
 def draw_invalid_move():
     print("That is an invalid move, please make a valid move!")
 
 def draw_hands(players, playerDict, screen, current_player):
     for letter in players:
         playerDict[letter].draw_hand(screen, current_player)
-    
+
 def draw_game_board(state, hovered, screen, board, deck, current_player, players, playerDict, die1, die2, n_hovered, hovered_build_menu): #the hovered number tells you which aspect of the menu is hovered over
     if state==0: #Launch Screen
         #Main Menu background
@@ -68,7 +70,7 @@ def draw_game_board(state, hovered, screen, board, deck, current_player, players
         elif hovered == 3:
             screen.blit(img_handling.pg, (menu_left, pg_h))
             screen.blit(img_handling.ng, (menu_left, ng_h))
-            screen.blit(img_handling.qg_hover, (menu_left-disp_hover_w, qg_h-disp_hover_h))            
+            screen.blit(img_handling.qg_hover, (menu_left-disp_hover_w, qg_h-disp_hover_h))
     elif state==1:
         #a big rectangle designating the actual board portion of the screen!
         pygame.draw.rect(screen, WHITE, ((width-height)//2, 0, height, height))
@@ -96,4 +98,3 @@ def draw_game_board(state, hovered, screen, board, deck, current_player, players
         else:
             screen.blit(next_turn, (BOARD_LEFT_POS+height-pygame.Surface.get_width(next_turn), 0))
         draw_hands(players, playerDict, screen, current_player)
-        

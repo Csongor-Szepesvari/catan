@@ -1,7 +1,7 @@
 #Welcome to my Catan Boardgame simulation!! This is meant as an example of what you can do with coding
 #Here, we simulate the boardgame Catan, albeit with low quality graphics!
 import pygame
-from win32api import GetSystemMetrics
+# from win32api import GetSystemMetrics
 import os
 import ctypes
 import random as r
@@ -10,8 +10,11 @@ import random as r
 import time as t
 
 
-#Optimize for 
-(width, height) = (GetSystemMetrics(0),GetSystemMetrics(1))
+#Optimize for
+# (width, height) = (GetSystemMetrics(0),GetSystemMetrics(1))
+pygame.init()
+infoObject = pygame.display.Info()
+(width, height) = (infoObject.current_w, infoObject.current_h)
 screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
 import img_handling
 import map_generate
@@ -22,9 +25,9 @@ import deck
 import die
 import draw
 
-myappid = 'mycompany.myproduct.subproduct.version' # arbitrary string
-ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
-icon = pygame.image.load("images\Board2.png").convert_alpha()
+# myappid = 'mycompany.myproduct.subproduct.version' # arbitrary string
+# ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+icon = pygame.image.load("images/board2.png").convert_alpha()
 pygame.display.set_icon(icon)
 #GAMEPLAY CONSTANTS
 VILLAGE = "village"
@@ -70,18 +73,18 @@ def chooseRoad(s):
 class Board():
     def __init__(self):
         self.board = vertex.fresh() #a two dimensional board with [y][x]
-        self.tileBoard = map_generate.gen_map(self.board) #the hex tiles that populate the board                          
+        self.tileBoard = map_generate.gen_map(self.board) #the hex tiles that populate the board
     def gen_new_map(self):
         self.board = vertex.fresh()
         self.tileBoard = map_generate.gen_map(self.board)
-        
+
     def print_board(self):
         for i in range(12):
             stringOut = ""
             for j in range(11):
                 stringOut += self.board[i][j].colour
             print(stringOut)
-            
+
     def draw_board(self):
         for i in range(len(self.tileBoard)):
             self.tileBoard[i].draw_tile(screen)
@@ -91,7 +94,7 @@ class Board():
                     self.board[i][j].draw_vertex(screen)
 
 
-    
+
 
 #intialize classes
 board = Board()
@@ -106,7 +109,7 @@ playerDict["w"] = white
 playerDict["b"] = blue
 
 
-    
+
 #ACTUAL GAMEPLAY CORE
 running = True
 state = 0
@@ -168,7 +171,7 @@ while running:
                 #    for j in range(len(board.board[i])):
                 #        if board.board[i][j]!=None and board.board[i][j].is_hovered() and state == 1:
                 #            board.board[i][j].build = True
-                            
+
                 if state==0 and event.pos[0] >= menu_left and event.pos[0] <= menu_left+pygame.Surface.get_width(img_handling.pg) and event.pos[1]<=qg_h+pygame.Surface.get_height(img_handling.qg) and event.pos[1] >= qg_h:
                     running = False
                 elif state == 0 and event.pos[0] >= menu_left and event.pos[0] <= menu_left+pygame.Surface.get_width(img_handling.pg) and event.pos[1]>=pg_h and event.pos[1]<=pg_h+pygame.Surface.get_height(img_handling.pg):
@@ -186,18 +189,18 @@ while running:
                     for i in range(len(board.tileBoard)):
                         if board.tileBoard[i].number==rolled_num:
                             board.tileBoard[i].add_resources(orange, red, blue, white, deck)
-                    
+
             #if event.button == 3:
             #    for i in range(len(board.board)):
             #        for j in range(len(board.board[i])):
             #            if board.board[i][j]!=None and board.board[i][j].build:
             #                board.board[i][j].build = False
-                    
+
         elif event.type == pygame.KEYDOWN:
             key = event.key
             if key == pygame.K_r:
                 board.gen_new_map()
-                
+
                 print("generate map")
             elif key == pygame.K_m:
                 state = 0
@@ -212,14 +215,13 @@ while running:
                 board.board[5][4].occ_by = "ov"
             elif key == pygame.K_LEFT:
                 board.board[5][4].colour = "o"
-                board.board[5][4].occ_by = "oc" 
+                board.board[5][4].occ_by = "oc"
             elif key == pygame.K_RIGHT:
                 tracker = (tracker+1)%4
                 current_player = players[tracker]
             elif key == pygame.K_a:
                 playerDict[current_player].add_res("WOOD")
-                
+
     screen.blit(img_handling.bg_img, (0,0))
     draw.draw_game_board(state, hovered, screen, board, deck, current_player, players, playerDict, die1, die2, n_hovered, hover_build_menu)
-    pygame.display.flip()    
-
+    pygame.display.flip()
