@@ -14,8 +14,10 @@ import time as t
 # (width, height) = (GetSystemMetrics(0),GetSystemMetrics(1))
 pygame.init()
 infoObject = pygame.display.Info()
-(width, height) = (infoObject.current_w, infoObject.current_h)
+width, height = (infoObject.current_w, infoObject.current_h)
 screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
+# width, height = (800, 600)
+# screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 import img_handling
 import map_generate
 import tile
@@ -183,8 +185,7 @@ while running:
                     tracker = (tracker+1)%4
                     current_player = players[tracker]
                     draw.draw_hands(players, playerDict, screen, current_player)
-                    die1.roll_die(screen)
-                    die2.roll_die(screen)
+                    die.roll_dice_simultaneously([die1, die2], screen)
                     rolled_num = die1.number + die2.number
                     for i in range(len(board.tileBoard)):
                         if board.tileBoard[i].number==rolled_num:
